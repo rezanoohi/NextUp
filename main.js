@@ -17,7 +17,6 @@ app.use(express.json());
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/todo', todoRouter);
 
-// Route not found
 app.use((req, res, next) => {
     throw new AppError(`Cannot find ${req.url} on server.`, 404);
 });
