@@ -33,7 +33,7 @@ const refreshTokenController = async (req, res) => {
 }
 
 const logoutController = async (req, res) => {
-    const deviceID = req.body.deviceID;
+    const deviceID = req.body['deviceID'];
     await logoutService(deviceID);
     sendResponse(res, 200, 'Logout successfully')
 }

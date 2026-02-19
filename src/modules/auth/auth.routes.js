@@ -14,7 +14,7 @@ const router = Router();
 router.route('/register').post(registerController);
 router.route('/login').post(loginController);
 router.route('/refresh').post(refreshTokenController);
-// router.use(authMiddleware);
+router.use(authMiddleware);
 router.route('/logout').post(logoutController);
 router.route('/sessions').get(getAllSessionsController);
 router.route('/account').delete(deleteAccountController);
