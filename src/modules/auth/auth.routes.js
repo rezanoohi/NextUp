@@ -1,7 +1,7 @@
 import {Router} from "express";
 import {
     deleteAccountController,
-    getAllSessionsController,
+    getSessionsController,
     loginController,
     logoutController,
     refreshTokenController,
@@ -16,7 +16,7 @@ router.route('/login').post(loginController);
 router.route('/refresh').post(refreshTokenController);
 router.use(authMiddleware);
 router.route('/logout').post(logoutController);
-router.route('/sessions').get(getAllSessionsController);
+router.route('/sessions').get(getSessionsController);
 router.route('/account').delete(deleteAccountController);
 
 export default router;

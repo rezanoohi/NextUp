@@ -1,7 +1,12 @@
-import {loginService, getNewAccessTokenService, registerService, logoutService} from "./auth.services.js";
+import {
+    loginService,
+    getNewAccessTokenService,
+    registerService,
+    logoutService,
+    getSessionsService
+} from "./auth.services.js";
 import {sendResponse} from "../../common/utils/sendResponse.js";
 import {AppError} from "../../common/errors/AppError.js";
-import {UAParser} from 'ua-parser-js';
 
 const registerController = async (req, res) => {
     const {email, password, name, age, deviceID} = req.body;
@@ -37,10 +42,10 @@ const logoutController = async (req, res) => {
     await logoutService(deviceID);
     sendResponse(res, 200, 'Logout successfully')
 }
-const getAllSessionsController = async (req, res) => {
-    const ua = new UAParser(req.headers['user-agent']);
-    res.json(ua.getResult())
-
+const getSessionsController = async (req, res) => {
+    const userID = req.userID;
+    const sessions = await getSessionsService(userID);
+    sendResponse(res, 200, sessions);
 }
 const deleteAccountController = async (req, res) => {
 }
@@ -50,6 +55,6 @@ export {
     loginController,
     refreshTokenController,
     logoutController,
-    getAllSessionsController,
+    getSessionsController,
     deleteAccountController
 }

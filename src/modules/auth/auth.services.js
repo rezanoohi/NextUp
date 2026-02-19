@@ -5,7 +5,7 @@ import {
     createUserModel, deleteRefreshTokenByDeviceIDModel,
     deleteRefreshTokenModel,
     findRefreshTokenModel,
-    findUserByEmailModel,
+    findUserByEmailModel, getSessionModel,
     saveRefreshTokenModel
 } from "./auth.models.js";
 import {AppError} from "../../common/errors/AppError.js";
@@ -70,4 +70,8 @@ const logoutService = async (deviceID) => {
     await deleteRefreshTokenByDeviceIDModel(deviceID);
 }
 
-export {registerService, loginService, getNewAccessTokenService, logoutService};
+const getSessionsService = async (userID) => {
+    return  await getSessionModel(userID);
+}
+
+export {registerService, loginService, getNewAccessTokenService, logoutService, getSessionsService};

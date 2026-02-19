@@ -48,6 +48,16 @@ const deleteRefreshTokenModel = async (refreshToken) => {
     `, [refreshToken]);
 }
 
+const getSessionModel = async (userID) => {
+    const sessions = await pool.query(`
+    SELECT id, user_id, device_id, user_agent, created_at
+    FROM refresh_tokens
+    WHERE user_id = $1
+    ORDER BY created_at
+    `, [userID]);
+    return sessions.rows;
+}
+
 export {
     createUserModel,
     findUserByEmailModel,
@@ -55,4 +65,5 @@ export {
     deleteRefreshTokenByDeviceIDModel,
     findRefreshTokenModel,
     deleteRefreshTokenModel,
+    getSessionModel
 }
