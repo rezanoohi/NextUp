@@ -18,9 +18,9 @@ const findUserByEmailModel = async (email) => {
     return user.rows[0];
 }
 
-const saveRefreshTokenModel = async (userID, deviceID, refreshToken, userAgent) => {
+const saveSessionModel = async (userID, deviceID, refreshToken, userAgent) => {
     await pool.query(`
-        INSERT INTO refresh_tokens(user_id, device_id , refresh_token, user_agent)
+        INSERT INTO sessions(user_id, device_id , refresh_token, user_agent)
         VALUES ($1, $2, $3, $4)
     `, [userID, deviceID, refreshToken, userAgent]);
 }
@@ -28,7 +28,7 @@ const saveRefreshTokenModel = async (userID, deviceID, refreshToken, userAgent) 
 const findRefreshTokenModel = async (refreshToken) => {
     const findRefreshToken = await pool.query(`
     SELECT *
-    FROM refresh_tokens
+    FROM sessions
     WHERE refresh_token = $1
     `, [refreshToken]);
     return findRefreshToken.rows[0]
@@ -36,14 +36,14 @@ const findRefreshTokenModel = async (refreshToken) => {
 
 const deleteRefreshTokenByDeviceIDModel = async (deviceID) => {
     await pool.query(`
-    DELETE FROM refresh_tokens
+    DELETE FROM sessions
     WHERE device_id = $1
     `, [deviceID]);
 }
 
 const deleteRefreshTokenModel = async (refreshToken) => {
     await pool.query(`
-    DELETE FROM refresh_tokens
+    DELETE FROM sessions
     WHERE refresh_token = $1
     `, [refreshToken]);
 }
@@ -51,7 +51,7 @@ const deleteRefreshTokenModel = async (refreshToken) => {
 const getSessionModel = async (userID) => {
     const sessions = await pool.query(`
     SELECT id, user_id, device_id, user_agent, created_at
-    FROM refresh_tokens
+    FROM sessions
     WHERE user_id = $1
     ORDER BY created_at
     `, [userID]);
@@ -61,7 +61,7 @@ const getSessionModel = async (userID) => {
 export {
     createUserModel,
     findUserByEmailModel,
-    saveRefreshTokenModel,
+    saveSessionModel,
     deleteRefreshTokenByDeviceIDModel,
     findRefreshTokenModel,
     deleteRefreshTokenModel,

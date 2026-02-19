@@ -6,7 +6,7 @@ import {
     deleteRefreshTokenModel,
     findRefreshTokenModel,
     findUserByEmailModel, getSessionModel,
-    saveRefreshTokenModel
+    saveSessionModel
 } from "./auth.models.js";
 import {AppError} from "../../common/errors/AppError.js";
 import {REFRESH_TOKEN_SECRET} from "../../config/env.js";
@@ -23,7 +23,7 @@ const registerService = async (email, password, name, age, deviceID, userAgent) 
         });
         const newUser = await createUserModel(email, passwordHash, name, age);
         const {accessToken, refreshToken} = generateToken(newUser.id);
-        await saveRefreshTokenModel(newUser.id, deviceID, refreshTokenHash(refreshToken), userAgent);
+        await saveSessionModel(newUser.id, deviceID, refreshTokenHash(refreshToken), userAgent);
 
         return {email: newUser.email, name: newUser.name, age: newUser.age, accessToken, refreshToken};
     } catch (err) {
@@ -41,7 +41,7 @@ const loginService = async (email, password, deviceID, userAgent) => {
     const {accessToken, refreshToken} = generateToken(user.id);
     // Replace existing refresh token for this device (if any)
     await deleteRefreshTokenByDeviceIDModel(deviceID);
-    await saveRefreshTokenModel(user.id, deviceID, refreshTokenHash(refreshToken), userAgent);
+    await saveSessionModel(user.id, deviceID, refreshTokenHash(refreshToken), userAgent);
 
     return {email: user.email, name: user.name, age: user.age, accessToken, refreshToken};
 }
@@ -54,7 +54,7 @@ const getNewAccessTokenService = async (refreshToken) => {
         // Rotate refresh token
         await deleteRefreshTokenModel(refreshTokenHash(refreshToken));
         const {accessToken: newAccessToken, refreshToken: newRefreshToken} = generateToken(decoded.sub);
-        await saveRefreshTokenModel(decoded.sub, findRefreshToken['device_id'], refreshTokenHash(newRefreshToken), findRefreshToken['user_agent']);
+        await saveSessionModel(decoded.sub, findRefreshToken['device_id'], refreshTokenHash(newRefreshToken), findRefreshToken['user_agent']);
 
         return {accessToken: newAccessToken, refreshToken: newRefreshToken}
     } catch (err) {
