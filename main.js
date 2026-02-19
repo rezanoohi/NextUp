@@ -1,5 +1,4 @@
 import express from 'express';
-import cookieParser from 'cookie-parser';
 
 import {SERVER_PORT} from "./src/config/env.js";
 import {errorHandler} from "./src/common/middlewares/errorHandler.js";

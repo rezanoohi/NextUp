@@ -1,8 +1,8 @@
 {
-  "name": "taskio",
+  "name": "nextup",
   "version": "1.0.0",
   "description": "",
-  "license": "ISC",
+  "license": "",
   "author": "Reza Noohi",
   "type": "module",
   "main": "main.js",
@@ -11,10 +11,7 @@
   },
   "dependencies": {
     "argon2": "^0.44.0",
-    "bcrypt": "^6.0.0",
-    "cookie-parser": "^1.4.7",
     "express": "^5.2.1",
-    "i": "^0.3.7",
     "jsonwebtoken": "^9.0.3",
     "npm": "^11.10.0",
     "pg": "^8.18.0",
