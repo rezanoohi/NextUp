@@ -3,7 +3,7 @@ import {
     getNewAccessTokenService,
     registerService,
     logoutService,
-    getSessionsService
+    getSessionsService, deleteAccountService
 } from "./auth.services.js";
 import {sendResponse} from "../../common/utils/sendResponse.js";
 import {AppError} from "../../common/errors/AppError.js";
@@ -48,6 +48,9 @@ const getSessionsController = async (req, res) => {
     sendResponse(res, 200, sessions);
 }
 const deleteAccountController = async (req, res) => {
+    const userID = req.userID;
+    const deletedAccount = await deleteAccountService(userID);
+    sendResponse(res, 200, deletedAccount);
 }
 
 export {

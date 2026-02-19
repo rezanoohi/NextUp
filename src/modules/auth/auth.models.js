@@ -58,6 +58,15 @@ const getSessionModel = async (userID) => {
     return sessions.rows;
 }
 
+const deleteAccountModel = async (userID) => {
+    const deletedAccount = await pool.query(`
+        DELETE FROM users
+        WHERE id = $1
+        RETURNING id, email, name, age
+    `, [userID]);
+    return deletedAccount.rows[0];
+}
+
 export {
     createUserModel,
     findUserByEmailModel,
@@ -65,5 +74,6 @@ export {
     deleteRefreshTokenByDeviceIDModel,
     findRefreshTokenModel,
     deleteRefreshTokenModel,
-    getSessionModel
+    getSessionModel,
+    deleteAccountModel
 }

@@ -2,7 +2,7 @@ import argon2 from "argon2";
 import jwt from 'jsonwebtoken';
 
 import {
-    createUserModel, deleteRefreshTokenByDeviceIDModel,
+    createUserModel, deleteAccountModel, deleteRefreshTokenByDeviceIDModel,
     deleteRefreshTokenModel,
     findRefreshTokenModel,
     findUserByEmailModel, getSessionModel,
@@ -71,7 +71,20 @@ const logoutService = async (deviceID) => {
 }
 
 const getSessionsService = async (userID) => {
-    return  await getSessionModel(userID);
+    return await getSessionModel(userID);
 }
 
-export {registerService, loginService, getNewAccessTokenService, logoutService, getSessionsService};
+const deleteAccountService = async (userID) => {
+    const deletedAccount = await deleteAccountModel(userID);
+    if (!deletedAccount) throw new AppError(`Cannot find user with ID ${userID}`);
+    return deletedAccount;
+}
+
+export {
+    registerService,
+    loginService,
+    getNewAccessTokenService,
+    logoutService,
+    getSessionsService,
+    deleteAccountService
+};
