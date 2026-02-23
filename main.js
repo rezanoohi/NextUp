@@ -2,7 +2,7 @@ import express from 'express';
 import swaggerUI from 'swagger-ui-express';
 
 
-import {SERVER_PORT} from "./src/config/env.js";
+import {PORT} from "./src/config/env.js";
 import {errorHandler} from "./src/common/middlewares/errorHandler.js";
 import {AppError} from "./src/common/errors/AppError.js";
 import {initDB} from "./src/config/initDB.js";
@@ -32,6 +32,6 @@ app.use(errorHandler);
 // Initialize database
 await initDB();
 
-app.listen(SERVER_PORT, () => {
-    console.log(`[express] Server listening on port ${SERVER_PORT}`)
+app.listen(PORT, () => {
+    console.log(`[express] Server listening on port ${PORT}`)
 })
