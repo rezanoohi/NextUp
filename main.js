@@ -1,8 +1,8 @@
 import express from 'express';
 import swaggerUI from 'swagger-ui-express';
+import cors from 'cors';
 
-
-import {PORT} from "./src/config/env.js";
+import {ALLOWED_ORIGINS, PORT} from "./src/config/env.js";
 import {errorHandler} from "./src/common/middlewares/errorHandler.js";
 import {AppError} from "./src/common/errors/AppError.js";
 import {initDB} from "./src/config/initDB.js";
@@ -14,6 +14,11 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
+
+app.use(cors({
+    origin: ALLOWED_ORIGINS,
+    credentials: true
+}));
 
 // Routes
 app.use('/api/v1/auth', authRouter);

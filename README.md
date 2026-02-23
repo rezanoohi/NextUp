@@ -44,7 +44,7 @@ npm install
 #### 3. Create `.env` file and fill in the environment variables
 ```env
 PORT=
-
+ALLOWED_ORIGINS=
 DB_URL=
 
 ACCESS_TOKEN_SECRET=
