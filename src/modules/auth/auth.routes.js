@@ -17,7 +17,7 @@ router.route('/register').post(inputValidator(registerSchema), registerControlle
 router.route('/login').post(inputValidator(loginSchema), loginController);
 router.route('/refresh').post(refreshTokenController);
 router.use(authMiddleware);
-router.route('/logout').post(inputValidator(logoutSchema),logoutController);
+router.route('/logout').post(inputValidator(logoutSchema), logoutController);
 router.route('/sessions').get(getSessionsController);
 router.route('/account').delete(deleteAccountController);
 

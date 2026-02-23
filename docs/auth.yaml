@@ -1,0 +1,280 @@
+/auth/register:
+  post:
+    tags: [ Auth ]
+    summary: Create a new user
+    description: Create a new user then get access token and refresh token
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+                example: example@gmail.com
+                description: User email address
+              password:
+                type: string
+                minLength: 8
+                example: abc123456
+                description: User password
+              name:
+                type: string
+                example: Mammad
+                description: User full name
+              age:
+                type: integer
+                minimum: 0
+                example: 23
+                description: User age
+              deviceID:
+                type: string
+                format: uuid
+                example: 1c16ffe8-e300-4144-8b10-133b6c07d95f
+                description: User device ID (UUID)
+            required: [ email, password, deviceID ]
+    responses:
+      "201":
+        description: User created successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                data:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      example: example@gmail.com
+                    name:
+                      type: string
+                      nullable: true
+                      example: Mammad
+                    age:
+                      type: integer
+                      nullable: true
+                      example: 23
+                    accessToken:
+                      type: string
+                      example: ihBibfd...
+                    refreshToken:
+                      type: string
+                      example: DlknsdN...
+      "400":
+        description: Validation error
+      "409":
+        description: Email already exists
+
+/auth/login:
+  post:
+    tags: [ Auth ]
+    summary: Login user
+    description: Authenticate user with email and password, returns access token and refresh token
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+                example: reza@gmail.com
+                description: User email address
+              password:
+                type: string
+                example: "123456"
+                description: User password
+              deviceID:
+                type: string
+                format: uuid
+                example: 1c81a62c-60be-43e5-9bbe-780c9c285296
+                description: User device ID (UUID)
+            required: [ email, password, deviceID ]
+    responses:
+      "200":
+        description: Login successful
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                data:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      example: reza@gmail.com
+                    name:
+                      type: string
+                      nullable: true
+                      example: null
+                    age:
+                      type: integer
+                      nullable: true
+                      example: null
+                    accessToken:
+                      type: string
+                      example: dfKNgN...
+                    refreshToken:
+                      type: string
+                      example: dfhJOEGj...
+      "400":
+        description: Validation error
+      "401":
+        description: Invalid email or password
+
+/auth/refresh:
+  post:
+    tags: [ Auth ]
+    summary: Refresh access token
+    description: Get new access token and refresh token using a valid refresh token (token rotation)
+    security:
+      - bearerAuth: [ ]
+    responses:
+      "200":
+        description: Tokens refreshed successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                data:
+                  type: object
+                  properties:
+                    accessToken:
+                      type: string
+                      example: eyJhbGci...
+                    refreshToken:
+                      type: string
+                      example: eyJhbGci...
+      "401":
+        description: Refresh token expired, login again
+      "403":
+        description: Refresh token not found, please login
+
+/auth/logout:
+  post:
+    tags: [ Auth ]
+    summary: Logout user
+    description: Logout user and invalidate the session for the given device
+    security:
+      - bearerAuth: [ ]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              deviceID:
+                type: string
+                format: uuid
+                example: 1c81a62c-60be-43e5-9bbe-780c9c285295
+                description: Device ID to logout from
+            required: [ deviceID ]
+    responses:
+      "200":
+        description: Logged out successfully
+      "400":
+        description: Validation error
+      "401":
+        description: Unauthorized, invalid or missing access token
+
+/auth/sessions:
+  get:
+    tags: [ Auth ]
+    summary: Get active sessions
+    description: Get all active sessions for the authenticated user
+    security:
+      - bearerAuth: [ ]
+    responses:
+      "200":
+        description: List of active sessions
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        example: 4463ab1e-50c9-414d-9311-0bac7d333877
+                      user_id:
+                        type: string
+                        format: uuid
+                        example: ad987eac-9abf-4aed-8501-23546231b60d
+                      device_id:
+                        type: string
+                        format: uuid
+                        example: b006ba63-2d4f-4eff-a784-457085b0aaca
+                      user_agent:
+                        type: string
+                        example: bruno-runtime/3.0.2
+                      created_at:
+                        type: string
+                        format: date-time
+                        example: "2026-02-19T16:44:18.944Z"
+      "401":
+        description: Unauthorized, invalid or missing access token
+
+/auth/account:
+  delete:
+    tags: [ Auth ]
+    summary: Delete user account
+    description: Permanently delete the authenticated user's account
+    security:
+      - bearerAuth: [ ]
+    responses:
+      "200":
+        description: Account deleted successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: ad987eac-9abf-4aed-8501-23546231b60d
+                    email:
+                      type: string
+                      format: email
+                      example: reza@gmail.com
+                    name:
+                      type: string
+                      nullable: true
+                      example: null
+                    age:
+                      type: integer
+                      nullable: true
+                      example: null
+      "401":
+        description: Unauthorized, invalid or missing access token
