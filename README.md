@@ -43,7 +43,7 @@ npm install
 
 #### 3. Create `.env` file and fill in the environment variables
 ```env
-SERVER_PORT=
+PORT=
 
 DB_URL=
 
