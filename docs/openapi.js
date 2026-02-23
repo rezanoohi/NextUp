@@ -1,5 +1,6 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import pj from '.././package.json' with {type: 'json'};
+import {BASE_URL} from "../src/config/env.js";
 
 const options = {
     failOnErrors: true,
@@ -12,7 +13,7 @@ const options = {
         },
         servers: [
             {
-                url: 'http://localhost:3000/api/v1',
+                url: BASE_URL,
                 description: 'Local development server'
             }
         ],

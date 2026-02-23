@@ -6,6 +6,7 @@ try {
 export const {
     PORT,
     ALLOWED_ORIGINS,
+    BASE_URL,
     DB_URL,
     ACCESS_TOKEN_SECRET,
     REFRESH_TOKEN_SECRET,
