@@ -44,7 +44,8 @@ npm install
 #### 3. Create `.env` file and fill in the environment variables
 ```env
 PORT=
-ALLOWED_ORIGINS=
+ALLOWED_ORIGINS=http://localhost:{PORT}
+BASE_URL=http://localhost:{PORT}/api/v1
 DB_URL=
 
 ACCESS_TOKEN_SECRET=
